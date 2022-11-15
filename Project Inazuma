@@ -1,0 +1,55 @@
+print("Hello world")
+
+local powerChanger = false
+local powerValue = 5
+-------------- VALUES END --------------------------
+local mt = getrawmetatable(game)
+local old = mt.__namecall
+setreadonly(mt,false)
+mt.__namecall = newcclosure(function(self, ...)
+    local args = {...}
+    if getnamecallmethod() == 'FireServer' and self.Name == 'KickedBall' and powerChanger == true then
+        args[1] = powerValue
+    end
+    if getnamecallmethod() == speedKeybind == true then
+        args[1] = speedSlider
+    end
+    return old(self, unpack(args))
+end)
+
+local Tab = Window:CreateTab("Project Inazuma", 4483362458)
+local Section = Tab:CreateSection("Buy Premium for uncapped Power and more features!")
+
+local Toggle = Tab:CreateToggle({
+    Name = "Change Power",
+    CurrentValue = false,
+    Flag = "powerToggle",
+    Callback = function(Value)
+        powerChanger = Value
+    end,
+})
+
+local Slider = Tab:CreateSlider({
+    Name = "Power Changer",
+    Range = {5, 130},
+    Increment = 5,
+    Suffix = "Power",
+    CurrentValue = 5,
+    Flag = "powerSlider",
+    Callback = function(Value)
+        powerValue = Value
+    end,
+})
+
+local Keybind = Tab:CreateKeybind({
+    Name = "Running Speed (Legit)",
+    CurrentKeybind = "F",
+    HoldToInteract = true,
+    Flag = "speedKeybind",
+    Callback = function(Keybind)
+        speedKeybind = Value
+        if Keybind then
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 25
+        end
+    end,
+})
